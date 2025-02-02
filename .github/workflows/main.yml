@@ -45,6 +45,8 @@ jobs:
 
       - name: Commit files
         run: |
+           git rm -f china_ip.txt not_china_ip.txt
+           git commit -m "$(date "+%Y-%m-%d %H:%M:%S") delete old files"
            cp /tmp/china_ip.txt /tmp/not_china_ip.txt .
            git add china_ip.txt not_china_ip.txt
            git commit -m "$(date "+%Y-%m-%d %H:%M:%S") update ip-lists files"
