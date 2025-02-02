@@ -1,0 +1,56 @@
+name: update-lists
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0,8,16 * * *'
+
+jobs:
+
+  run-get-ip-lists:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository for execute script
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: '3.10.16'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Execute script
+        run: python process_ip_lists.py
+
+      - name: Copy file to tempdir
+        run: |
+           cp china_ip.txt not_china_ip.txt /tmp
+
+      - name: Checkout repository for commit files
+        uses: actions/checkout@v4
+        with:
+          ref: dist
+
+      - name: Configure Git user
+        run: |
+           git config --local user.email "seiiyas@github.com"
+           git config --local user.name "seiiyas"
+
+      - name: Commit files
+        run: |
+           cp /tmp/china_ip.txt /tmp/not_china_ip.txt .
+           git add china_ip.txt not_china_ip.txt
+           git commit -m "$(date "+%Y-%m-%d %H:%M:%S") update ip-lists files"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dist
