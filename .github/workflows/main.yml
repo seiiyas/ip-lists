@@ -31,7 +31,7 @@ jobs:
 
       - name: Copy file to tempdir
         run: |
-           cp china_ip.txt not_china_ip.txt /tmp
+           cp china_ip.txt not_china_ip.txt china_ip_v6.txt not_china_ip_v6.txt /tmp
 
       - name: Checkout repository for commit files
         uses: actions/checkout@v4
@@ -45,10 +45,10 @@ jobs:
 
       - name: Commit files
         run: |
-           git rm -f china_ip.txt not_china_ip.txt
+           git rm -f china_ip.txt not_china_ip.txt china_ip_v6.txt not_china_ip_v6.txt
            git commit -m "$(date "+%Y-%m-%d %H:%M:%S") delete old files"
-           cp /tmp/china_ip.txt /tmp/not_china_ip.txt .
-           git add china_ip.txt not_china_ip.txt
+           cp /tmp/china_ip.txt /tmp/not_china_ip.txt /tmp/china_ip_v6.txt /tmp/not_china_ip_v6.txt .
+           git add china_ip.txt not_china_ip.txt china_ip_v6.txt not_china_ip_v6.txt
            git commit -m "$(date "+%Y-%m-%d %H:%M:%S") update ip-lists files"
 
       - name: Push changes
