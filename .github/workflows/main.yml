@@ -9,19 +9,19 @@ jobs:
 
   run-get-ip-lists:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
 
       - name: Checkout repository for execute script
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
 
       - name: Set up Python
-        uses: actions/setup-python@v5.4.0
+        uses: actions/setup-python@v7
         with:
-          python-version: '3.12.14'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install requests
